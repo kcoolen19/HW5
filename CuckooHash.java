@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Keiron Coolen COMP 272 Section 001
  *
  *   Note, additional comments provided throughout this source code
  *   is for educational purposes
@@ -250,7 +250,53 @@ public class CuckooHash<K, V> {
 		// Also make sure you read this method's prologue above, it should help
 		// you. Especially the two HINTS in the prologue.
 
-		return;
+		// Calculate the first and second hash position
+		Bucket<K, V> newBucket = new Bucket<>(key, value);
+		int pos1 = hash1(key);
+		int pos2 = hash2(key);
+
+		// Check if the key and value exist at the first position
+		if ((table[pos1] != null && table[pos1].getBucKey().equals(key) && table[pos1].getValue().equals(value))) {
+        	return; 
+    	}
+		// Check if the key and value exist at the second position
+		if ((table[pos2] != null && table[pos2].getBucKey().equals(key) && table[pos2].getValue().equals(value))) {
+			return;
+		}
+		/*
+		 * Swap bucket up to the Capacity number if needed
+		 * A new bucket is put if the first position is empty
+		 */
+	
+    	for (int i = 0; i < CAPACITY; i++) { 
+        	if (table[pos1] == null) {
+           		table[pos1] = newBucket;
+            	return;
+        } else {
+			/*
+			 * Swap the current bucket with a new bucket if the position is taken
+			 * The displaced bucket is stored and then the new bucket is inserted at that position
+			 * 
+			 */
+            Bucket<K, V> displacedBucket = table[pos1];
+            table[pos1] = newBucket;
+            newBucket = displacedBucket;
+        }
+		// The next position is determined by switching between the 2 hash functions
+        if (pos1 == hash1(newBucket.getBucKey())) {
+			pos1 = hash2(newBucket.getBucKey());
+		} else {
+			pos1 =  hash1(newBucket.getBucKey());
+		}
+		// Place bucket if position is empty
+        if (table[pos1] == null) {
+            table[pos1] = newBucket;
+            return;
+        	}
+    	}
+		// If capacity is maxed out after insertion, the rehash() function is called and insertion is done again
+   	 	rehash();
+    	put(newBucket.getBucKey(), newBucket.getValue());
 	}
 
 

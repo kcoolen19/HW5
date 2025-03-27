@@ -1,6 +1,6 @@
 /******************************************************************
  *
- *   YOUR NAME / SECTION NUMBER
+ *   Keiron Coolen COMP 272 Section 001
  *
  *   This java file contains the problem solutions of isSubSet, findKthLargest,
  *   and sort2Arrays methods. You should utilize the Java Collection Framework for
@@ -33,8 +33,20 @@ class ProblemSolutions {
     public boolean isSubset(int list1[], int list2[]) {
 
         // ADD YOU CODE HERE -- DON'T FORGET TO ADD YOR NAME AT TOP OF FILE
-
-        return false;
+        /*
+         * Add every number to the hashset
+         * If numbers are found in the hashset from list 2, list 2 is a subset
+         */
+        HashSet<Integer> hashSet = new HashSet<>();
+        for (int number: list1) {
+            hashSet.add(number);
+        }
+        for (int number: list2) {
+            if (!hashSet.contains(number)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 
@@ -54,8 +66,13 @@ class ProblemSolutions {
     public int findKthLargest(int[] array, int k) {
 
         // ADD YOUR CODE HERE
-
-        return 0;
+        /*
+         * Sort Array
+         * Get the index of the k largest
+         */
+        Arrays.sort(array);
+        int kthLargest = array[array.length-k];
+        return kthLargest;
     }
 
 
@@ -75,8 +92,20 @@ class ProblemSolutions {
     public int[] sort2Arrays(int[] array1, int[] array2) {
 
         // ADD YOU CODE HERE
-
-        return null;
+        /*
+         * Fill merged array upto length of the first array
+         * Complete filling the merged array with remaining of second array
+         * Apply sort method to complete
+         */
+        int[] mergeArray = new int[array1.length+array2.length];
+        for (int i = 0;i < array1.length;i++) {
+            mergeArray[i] = array1[i];
+        }
+        for (int i = 0;i < array2.length;i++) {
+            mergeArray[i+array1.length] = array2[i];
+        }
+        Arrays.sort(mergeArray);
+        return mergeArray;
     }
 
 }
